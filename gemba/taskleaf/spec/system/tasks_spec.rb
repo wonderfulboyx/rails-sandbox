@@ -46,4 +46,35 @@ describe 'タスク管理機能' do
       it_behaves_like 'ユーザーAが作成したタスクが表示される'
     end
   end
+
+  describe '新規作成機能' do
+    let(:login_user) {user_a}
+    let(:task_name) {
+      # StringInstance
+    }
+
+    before do
+      visit new_task_path
+      fill_in 'Name', with: task_name
+      click_button 'Create Task'
+    end
+
+    context '新規作成画面で名称を入力したとき' do
+      let(:task_name) { '新規作成のテストを書く' }
+
+      it '正常に登録される' do
+        expect(page).to have_selector '.alert-success'
+      end
+    end
+
+    context '新規作成画面で空文字を入力したとき' do
+      let(:task_name) { '' }
+
+      it 'エラーとなる' do
+        within '#error_explanation' do
+          expect(page).to have_content 'a'
+        end
+      end
+    end
+  end
 end
