@@ -15,13 +15,15 @@ describe 'タスク管理機能' do
     click_button 'ログインする'
   end
 
+  shared_examples 'ユーザーAが作成したタスクが表示される' do
+    it { expect(page).to have_content task_a.name }
+  end
+
   describe '一覧表示' do
     context 'ユーザーAがログインしているとき' do
       let(:login_user) {user_a}
 
-      it 'ユーザーAが作成したタスクが表示される' do
-        expect(page).to have_content task_a.name
-      end
+      it_behaves_like 'ユーザーAが作成したタスクが表示される'
     end
 
     context 'ユーザーBがログインしているとき' do
@@ -41,9 +43,7 @@ describe 'タスク管理機能' do
         visit task_path(task_a)
       end
 
-      it 'ユーザーAの作成したタスクAが表示される' do
-        expect(page).to have_content task_a.name
-      end
+      it_behaves_like 'ユーザーAが作成したタスクが表示される'
     end
   end
 end
